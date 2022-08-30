@@ -1,6 +1,9 @@
 package gee
 
-import "strings"
+import (
+	"fmt"
+	"strings"
+)
 
 type node struct {
 	pattern  string
@@ -46,7 +49,7 @@ func (n *node) insert(pattern string, parts []string, height int) {
 		n.children = append(n.children, child)
 	}
 	//再往下一层，直到parts结束
-	child.insert(part, parts, height+1)
+	child.insert(pattern, parts, height+1)
 }
 
 func (n *node) search(parts []string, height int) *node {
@@ -66,5 +69,22 @@ func (n *node) search(parts []string, height int) *node {
 			return res
 		}
 	}
+
+	if n.pattern != "" {
+		return n
+	}
 	return nil
+}
+
+func (n *node) travel(list *([]*node)) {
+	if n.pattern != "" {
+		*list = append(*list, n)
+	}
+	for _, child := range n.children {
+		child.travel(list)
+	}
+}
+
+func (n *node) String() string {
+	return fmt.Sprintf("node{pattern=%s, part=%s, isWild=%t}", n.pattern, n.part, n.isWild)
 }
