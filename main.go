@@ -16,7 +16,7 @@ func main() {
 			c.HTML(http.StatusOK, "<h1>Hello Gee</h1>")
 		})
 		v1.GET("/hello", func(c *gee.Context) {
-			c.String(http.StatusOK, "hello %s,you're at %s\n", c.Query("name"))
+			c.String(http.StatusOK, "hello %s,you're at %s\n", c.Query("name"), c.Path)
 		})
 	}
 	v2 := r.Group("/v2")
